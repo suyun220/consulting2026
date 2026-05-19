@@ -373,9 +373,7 @@ function buildOverview(){
   const asgn=SCHOOLS.filter(s=>STATE[s.name]&&STATE[s.name].date).length;
   const conf=SCHOOLS.filter(s=>STATE[s.name]&&STATE[s.name].confirmed).length;
   const pct=Math.round(asgn/13*100);
-  const syncBanner=scriptUrl
-    ?'<div class="sync-banner sync-ok">☁️ Google Sheets 연동 중'+(lastSync?' · '+lastSync:'')+' · 30초 자동 동기화</div>'
-    :'<div class="sync-banner sync-warn">⚠️ Apps Script 미연결 — 이 기기에만 저장됩니다. <button onclick="openSetup()" style="margin-left:8px;font-size:13px;padding:3px 10px;border-radius:6px;border:1px solid #f59e0b;background:#fef3c7;color:#92400e;cursor:pointer;font-family:inherit">설정</button></div>';
+  const syncBanner='<div class="sync-banner sync-ok">☁️ Google Sheets 연동 중'+(lastSync?' · '+lastSync:'')+' · 30초 자동 동기화</div>';
   const legend='<div class="legend-bar"><strong>범례</strong><span>📢 연수강사 (베이지 배경)</span><span><span class="new-badge">NEW</span> 신규 합류</span><span>이름 = 기존 컨설팅단</span><span style="background:#23251d;color:#fff;padding:2px 8px;border-radius:5px;font-size:13px">이름</span> 선택됨</div>';
   const filters=['전체','임시배정','최종확정','미배정'];
   const filterBtns='<div class="filter-bar">'+filters.map(f=>'<button class="f-pill'+(statusFilter===f?' active':'')+'" data-filter="'+f+'" onclick="setFilter(this.dataset.filter)">'+f+'</button>').join('')+'</div>';
@@ -638,7 +636,7 @@ TEACHERS.forEach(t=>{const o=document.createElement('option');o.value=t.name;dl.
 /* ===== INIT ===== */
 loadMemos();
 loadLocal();
-scriptUrl=localStorage.getItem(URL_KEY)||'';
+scriptUrl='https://script.google.com/macros/s/AKfycbzazdykvv-XtbNkOl3ezx_Qjcswxf_Gt7ZXIdYaY3j1pgc6xl5GDDF1W3mbk5P68n6P/exec';
 document.getElementById('loading-screen')&&(document.getElementById('loading-screen').style.display='none');
 if(scriptUrl){
   loadServer().then(()=>{startSync();renderAll();});
