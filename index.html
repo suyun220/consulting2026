@@ -508,13 +508,20 @@ function getLecCandidates(sc){
 }
 function lecCell(sc){
   const st=STATE[sc.name];
-  if(!st||!st.date)return '<td style="color:var(--ash);vertical-align:middle">—</td>';
-  const cands=getLecCandidates(sc);
+  if(!st||!st.date)return '<td style="color:var(--ash);vertical-align:middle;padding:14px 15px">—</td>';
   const cur=st.lecturer||'';
   const ne=sc.name.replace(/'/g,"\\'");
-  if(!cands.length)return '<td style="font-size:15.5px;color:var(--ash);vertical-align:middle">해당 없음</td>';
-  const opts='<option value="">선택</option>'+cands.map(n=>'<option value="'+n+'"'+(cur===n?' selected':'')+'>'+n+'</option>').join('');
-  return '<td style="width:250px;vertical-align:middle"><select onchange="setLecturer(\''+ne+'\',this.value)" style="font-family:inherit;font-size:15.5px;padding:5px 8px;border:1.5px solid var(--soft);border-radius:6px;background:'+(cur?'#fef3c7':'#fff')+';color:var(--ink);cursor:pointer;width:100%">'+opts+'</select>'+(cur?'<div style="font-size:15.5px;color:#92400e;margin-top:3px;font-weight:700">📢 '+cur+'</div>':'')+'</td>';
+  const bg=cur?'#fef3c7':'#fff';
+  return '<td style="width:250px;vertical-align:middle;padding:10px 15px">'
+    +'<input type="text" value="'+cur+'" placeholder="직접 입력" '
+    +'data-school="'+ne+'" '
+    +'onchange="setLecturer(this.dataset.school,this.value)" '
+    +'onblur="setLecturer(this.dataset.school,this.value)" '
+    +'style="font-family:inherit;font-size:15.5px;padding:7px 10px;border:1.5px solid var(--soft);border-radius:6px;background:'+bg+';color:var(--ink);width:100%;outline:none" '
+    +'onfocus="this.style.borderColor=\'#f7a501\'" '
+    +'/>'
+    +(cur?'<div style="font-size:13px;color:#92400e;margin-top:4px;font-weight:600">📢 '+cur+'</div>':'')
+    +'</td>';
 }
 
 function buildSummary(){
@@ -534,10 +541,10 @@ function buildSummary(){
       :'<div style="display:flex;flex-wrap:wrap;gap:4px">'+sc.subs.map(s=>subTag(s,true)).join('')+'</div>';
     return '<tr class="'+rowCls+'">'
       +'<td style="font-weight:700;font-size:15px;color:var(--ink);padding:14px 15px;vertical-align:middle">'+sc.name+'</td>'
-      +'<td style="font-weight:600;font-size:15px;padding:14px 15px;white-space:nowrap">'+(st.date?st.date+'('+getDowS(st.date)+')':'—')+'</td>'
+      +'<td style="font-weight:600;font-size:15px;padding:14px 15px;white-space:nowrap;vertical-align:middle">'+(st.date?st.date+'('+getDowS(st.date)+')':'—')+'</td>'
       +'<td style="padding:14px 15px;line-height:1.8">'+subCell+'</td>'
       +lecCell(sc)
-      +'<td style="padding:14px 15px">'+stat+'</td>'
+      +'<td style="padding:14px 15px;vertical-align:middle">'+stat+'</td>'
       +'</tr>';
   }).join('');
 
@@ -624,7 +631,6 @@ function setLecturer(schoolName,name){if(!STATE[schoolName])return;STATE[schoolN
 
 function buildBalance(){
   const tc=computeTC();
-  // 교사별 배정 일자 수집
   const assigns={};
   SCHOOLS.forEach(sc=>{
     const st=STATE[sc.name];
@@ -636,7 +642,6 @@ function buildBalance(){
       });
     });
   });
-
   const sg={};
   TEACHERS.forEach(t=>{if(!t.name)return;if(!sg[t.sub])sg[t.sub]=[];sg[t.sub].push({name:t.name,count:tc[t.name]||0,role:t.role});});
   const maxAll=Math.max(...Object.values(sg).flat().map(x=>x.count),1);
@@ -645,25 +650,31 @@ function buildBalance(){
     const mn=Math.min(...sorted.map(x=>x.count)),mx=Math.max(...sorted.map(x=>x.count));
     const dev=mx-mn;const dc=dev<=1?'#16a34a':dev<=2?'#d97706':'#dc2626';
     const bar=SUB_ST[sub]?.bar||'#9b9c92';
-    const rows=sorted.map(t=>{
+    const rows=sorted.map((t,i)=>{
       const pct=maxAll>0?Math.round(t.count/maxAll*100):0;
       const isL=t.role==='lec';const isN=t.role==='new';
-      const myDates=assigns[t.name]||[];
-      // 날짜 정렬
-      myDates.sort((a,b)=>{const[am,ad]=a.split('/').map(Number),[bm,bd]=b.split('/').map(Number);return(am*100+ad)-(bm*100+bd);});
+      const myDates=(assigns[t.name]||[]).slice().sort((a,b)=>{
+        const[am,ad]=a.split('/').map(Number),[bm,bd]=b.split('/').map(Number);
+        return(am*100+ad)-(bm*100+bd);
+      });
+      const isLast=i===sorted.length-1;
       const datesHtml=myDates.length
-        ? '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">'+myDates.map(d=>'<span style="font-size:13px;background:#eeefe9;border-radius:4px;padding:3px 7px;color:var(--mid)">'+d+'('+getDowS(d)+')</span>').join('')+'</div>'
-        : '';
-      return '<div class="bal-row" style="flex-wrap:wrap;align-items:flex-start">'
-        +'<span style="font-size:15px;min-width:65px;color:var(--ink);font-weight:700;flex-shrink:0">'+(isL?'📢 ':'')+t.name+(isN?' <span class="new-badge">NEW</span>':'')+'</span>'
-        +'<div class="bal-bg" style="margin-top:4px"><div class="bal-bar" style="width:'+pct+'%;background:'+bar+'"></div></div>'
-        +'<span class="bal-cnt" style="flex-shrink:0">'+t.count+'회</span>'
-        +(datesHtml?'<div style="width:100%;padding-left:64px">'+datesHtml+'</div>':'')
+        ?'<div style="display:flex;flex-wrap:nowrap;gap:4px;margin-top:4px;padding-left:0;overflow:hidden">'
+          +myDates.map(d=>'<span style="font-size:12px;background:#f3f4f6;border-radius:4px;padding:2px 7px;color:#4d4f46;white-space:nowrap;flex-shrink:0">'+d+'('+getDowS(d)+')</span>').join('')
+          +'</div>'
+        :'';
+      return '<div style="padding:9px 0;'+(isLast?'':'border-bottom:0.5px solid #e5e7e0;')+'margin-bottom:'+(isLast?'0':'1px')+'">'
+        +'<div style="display:flex;align-items:center;gap:8px">'
+        +'<span style="font-size:15px;min-width:65px;color:#23251d;font-weight:700;flex-shrink:0">'+(isL?'📢 ':'')+t.name+(isN?' <span class="new-badge">NEW</span>':'')+'</span>'
+        +'<div class="bal-bg"><div class="bal-bar" style="width:'+pct+'%;background:'+bar+'"></div></div>'
+        +'<span class="bal-cnt">'+t.count+'회</span>'
+        +'</div>'
+        +datesHtml
         +'</div>';
     }).join('');
-    return '<div class="bal-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">'+subTag(sub,false)+'<span style="font-size:13px;font-weight:600;color:'+dc+';margin-left:auto">편차 '+dev+'회 ('+mn+'~'+mx+')</span></div>'+rows+'</div>';
+    return '<div class="bal-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">'+subTag(sub,false)+'<span style="font-size:15px;font-weight:600;color:'+dc+';margin-left:auto">편차 '+dev+'회 ('+mn+'~'+mx+')</span></div>'+rows+'</div>';
   }).join('');
-  return '<div class="callout callout-ok" style="margin-top:14px"><span>💡</span><div>출장 횟수와 배정 일자를 함께 확인하세요. 같은 주에 연속 배정되지 않도록 주의해 주세요.</div></div><div class="bal-grid">'+cards+'</div>';
+  return '<div class="callout callout-ok" style="margin-top:14px"><span>💡</span><div>출장 횟수와 배정 일자를 함께 확인하세요. 같은 주 연속 배정에 주의해 주세요.</div></div><div class="bal-grid">'+cards+'</div>';
 }
 
 function buildConstraints(){
