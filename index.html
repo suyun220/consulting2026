@@ -98,7 +98,7 @@ button{font-family:inherit;cursor:pointer;}
 .sum-tbl tr.conf td{background:#f0fdf4;}
 .sum-tbl tr.final td{background:#fffbeb;}
 .sum-tbl tr:hover td{background:var(--canvas);}
-.bal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.bal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 .bal-card{background:var(--card);border:1.5px solid var(--soft);border-radius:12px;padding:18px 20px;}
 .bal-row{display:flex;align-items:center;gap:8px;margin-top:6px;}
 .bal-bg{flex:1;background:var(--canvas);border-radius:999px;height:5px;overflow:hidden;}
@@ -202,7 +202,7 @@ const TEACHERS=[
   {name:'박선진',sub:'국어',role:'lec',unavail:['5/29','6/4','6/5','6/12','6/19'],note:'국어 예비강사'},
   {name:'김미숙',sub:'국어',role:'existing',unavail:['6/2','6/8','6/9','6/10','6/11','6/12','6/16','6/19','6/23','6/26','6/29','6/30','7/7','7/10','7/14']},
   {name:'김미정',sub:'국어',role:'new',unavail:[]},
-  {name:'장경준',sub:'국어',role:'new',unavail:[]},
+  {name:'장경준',sub:'국어',role:'new',unavail:['6/4']},
   {name:'박하선',sub:'국어',role:'new',unavail:['5/29','6/1','6/5','6/8','6/10','6/12','6/15','6/17','6/19']},
   {name:'한서현',sub:'국어',role:'new',unavail:['6/4','6/5','6/26','6/30','7/1','7/2','7/3']},
   {name:'강슬기',sub:'국어',role:'new',unavail:['6/4','6/11','6/18','6/25']},
@@ -222,17 +222,17 @@ const TEACHERS=[
   {name:'오아롱',sub:'영어',role:'existing',unavail:['6/29','6/30','7/1','7/2','7/14']},
   {name:'최빛나',sub:'영어',role:'new',unavail:['6/4','6/16','6/25','6/26','6/29','6/30','7/1']},
   {name:'정예현',sub:'영어',role:'new',unavail:['6/10','6/17','6/23','6/24','6/25','6/26','6/29','6/30','7/15','7/16']},
-  {name:'육진수',sub:'영어',role:'new',unavail:[]},
+  {name:'육진수',sub:'영어',role:'new',unavail:['6/30']},
   {name:'조재희',sub:'역사',role:'lec',unavail:['5/29','6/4','6/5','6/24','7/8'],note:'역사 연수강사'},
   {name:'우성은',sub:'역사',role:'lec',unavail:['5/29','6/4','6/5','6/30'],note:'역사 연수강사'},
   {name:'정혜숙',sub:'역사',role:'new',unavail:['5/29','6/1','6/2','6/4','6/5','6/8','6/9','6/10','6/11','6/15','6/16','6/17','6/18','6/19','6/22','6/23','6/25','6/26','6/29','6/30','7/1','7/2','7/6','7/7','7/9','7/13','7/14','7/16']},
   {name:'박범석',sub:'역사',role:'new',unavail:['6/2','6/9','6/16','6/23','6/30','7/7','7/14']},
-  {name:'정민경',sub:'역사',role:'new',unavail:[]},
+  {name:'정민경',sub:'역사',role:'new',unavail:['6/1']},
   {name:'김하나',sub:'사회',role:'lec',unavail:['5/29','6/5','6/10','6/11','6/15','6/16','6/18','6/24','6/26'],note:'사회 연수강사'},
   {name:'노지영',sub:'사회',role:'lec',unavail:['6/1','6/4','6/8','6/9','6/11','6/15','6/18','6/22','6/25','6/29','7/6','7/9','7/13'],note:'사회 연수강사 · 화3시~ · 수오후 · 금오전만',special:'nj'},
   {name:'장의선',sub:'사회',role:'lec',unavail:['6/1','6/4','6/5'],note:'사회 연수강사'},
   {name:'전보라',sub:'사회',role:'existing',unavail:['6/4','6/18','6/30','7/1','7/2','7/3']},
-  {name:'김솔이',sub:'사회',role:'new',unavail:[]},
+  {name:'김솔이',sub:'사회',role:'new',unavail:['6/24']},
   {name:'이한솔',sub:'사회',role:'new',unavail:['6/8','6/12','6/17','6/19','7/9']},
   {name:'김용실',sub:'과학',role:'lec',unavail:['6/2','6/3','6/8','7/6','7/7','7/8','7/9','7/10'],note:'과학 연수강사'},
   {name:'김강훈',sub:'과학',role:'lec',unavail:['6/2','6/19','7/15'],note:'과학 연수강사'},
@@ -279,7 +279,7 @@ function isAvail(name,date){
   return true;
 }
 function subAvail(sub,date){return TEACHERS.filter(t=>t.sub===sub&&isAvail(t.name,date));}
-function subTag(sub,sm){const s=SUB_ST[sub]||{bg:'#f3f4f6',c:'#374151'};return '<span class="sub-tag" style="background:'+s.bg+';color:'+s.c+';font-size:'+(sm?'12px':'14px')+';padding:'+(sm?'2px 7px':'4px 11px')+'">'+sub+'</span>';}
+function subTag(sub,sm){const s=SUB_ST[sub]||{bg:'#f3f4f6',c:'#374151'};return '<span class="sub-tag" style="background:'+s.bg+';color:'+s.c+';font-size:'+(sm?'14px':'16px')+';padding:'+(sm?'3px 9px':'5px 13px')+'">'+sub+'</span>';}
 function tripBadge(n){const bg=n===0?'#e5e7e0':n<=1?'#d9eddf':n<=3?'#fef3c7':'#f7d6d3';const c=n===0?'#9b9c92':n<=1?'#065f46':n<=3?'#92400e':'#991b1b';return '<span style="font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;background:'+bg+';color:'+c+'">'+n+'회</span>';}
 function computeTC(){
   const tc={};
@@ -508,26 +508,37 @@ function getLecCandidates(sc){
 }
 function lecCell(sc){
   const st=STATE[sc.name];
-  if(!st||!st.date)return '<td style="color:var(--ash)">—</td>';
+  if(!st||!st.date)return '<td style="color:var(--ash);vertical-align:middle">—</td>';
   const cands=getLecCandidates(sc);
   const cur=st.lecturer||'';
   const ne=sc.name.replace(/'/g,"\\'");
-  if(!cands.length)return '<td style="font-size:13px;color:var(--ash)">해당 없음</td>';
+  if(!cands.length)return '<td style="font-size:15.5px;color:var(--ash);vertical-align:middle">해당 없음</td>';
   const opts='<option value="">선택</option>'+cands.map(n=>'<option value="'+n+'"'+(cur===n?' selected':'')+'>'+n+'</option>').join('');
-  return '<td><select onchange="setLecturer(\''+ne+'\',this.value)" style="font-family:inherit;font-size:14px;padding:5px 8px;border:1.5px solid var(--soft);border-radius:6px;background:'+(cur?'#fef3c7':'#fff')+';color:var(--ink);cursor:pointer;width:100%">'+opts+'</select>'+(cur?'<div style="font-size:13px;color:#92400e;margin-top:3px;font-weight:700">📢 '+cur+'</div>':'')+'</td>';
+  return '<td style="width:250px;vertical-align:middle"><select onchange="setLecturer(\''+ne+'\',this.value)" style="font-family:inherit;font-size:15.5px;padding:5px 8px;border:1.5px solid var(--soft);border-radius:6px;background:'+(cur?'#fef3c7':'#fff')+';color:var(--ink);cursor:pointer;width:100%">'+opts+'</select>'+(cur?'<div style="font-size:15.5px;color:#92400e;margin-top:3px;font-weight:700">📢 '+cur+'</div>':'')+'</td>';
 }
 
 function buildSummary(){
-  const tc=computeTC();
   const viewMode=window._summaryView||'school';
 
   // 학교순 뷰
-  const schoolRows=SCHOOLS.map((sc,i)=>{
+  const schoolRows=SCHOOLS.map(sc=>{
     const st=STATE[sc.name]||{};
     const rowCls=st.confirmed?'final':st.date?'conf':'';
-    const stat=st.confirmed?'<span style="color:#b17816;font-weight:700">★ 최종확정</span>':st.date?'<span style="color:#15803d;font-weight:700">▶ 임시배정</span>':'<span style="color:#9b9c92">미배정</span>';
-    const subCell=st.date&&st.teachers?Object.entries(st.teachers).map(e=>'<div style="margin-bottom:2px">'+subTag(e[0],true)+' '+e[1].join(', ')+'</div>').join(''):sc.subs.map(s=>subTag(s,true)).join(' ');
-    return '<tr class="'+rowCls+'"><td style="font-weight:600;color:var(--ink)">'+sc.name+'</td><td style="font-weight:600">'+(st.date?st.date+'('+getDowS(st.date)+')':'—')+'</td><td style="font-size:13px;line-height:1.8">'+subCell+'</td>'+lecCell(sc)+'<td>'+stat+'</td></tr>';
+    const stat=st.confirmed
+      ?'<span style="color:#b17816;font-weight:700;font-size:15px">★ 최종확정</span>'
+      :st.date
+        ?'<span style="color:#15803d;font-weight:700;font-size:15px">▶ 임시배정</span>'
+        :'<span style="color:#9b9c92;font-size:15px">미배정</span>';
+    const subCell=st.date&&st.teachers
+      ?Object.entries(st.teachers).map(e=>'<div style="margin-bottom:5px;display:flex;align-items:center;gap:6px">'+subTag(e[0],true)+'<span style="font-size:15px">'+e[1].join(', ')+'</span></div>').join('')
+      :'<div style="display:flex;flex-wrap:wrap;gap:4px">'+sc.subs.map(s=>subTag(s,true)).join('')+'</div>';
+    return '<tr class="'+rowCls+'">'
+      +'<td style="font-weight:700;font-size:15px;color:var(--ink);padding:14px 15px;vertical-align:middle">'+sc.name+'</td>'
+      +'<td style="font-weight:600;font-size:15px;padding:14px 15px;white-space:nowrap">'+(st.date?st.date+'('+getDowS(st.date)+')':'—')+'</td>'
+      +'<td style="padding:14px 15px;line-height:1.8">'+subCell+'</td>'
+      +lecCell(sc)
+      +'<td style="padding:14px 15px">'+stat+'</td>'
+      +'</tr>';
   }).join('');
 
   // 날짜순 뷰
@@ -543,35 +554,68 @@ function buildSummary(){
     return(am*100+ad)-(bm*100+bd);
   });
   const dateRows=sortedDates.length
-    ? sortedDates.map(date=>{
+    ?sortedDates.map(date=>{
         const schools=dateMap[date];
         return schools.map((sc,i)=>{
           const st=STATE[sc.name]||{};
           const rowCls=st.confirmed?'final':'conf';
-          const stat=st.confirmed?'<span style="color:#b17816;font-weight:700">★ 최종확정</span>':'<span style="color:#15803d;font-weight:700">▶ 임시배정</span>';
-          const subCell=st.teachers?Object.entries(st.teachers).map(e=>'<div style="margin-bottom:2px">'+subTag(e[0],true)+' '+e[1].join(', ')+'</div>').join(''):sc.subs.map(s=>subTag(s,true)).join(' ');
-          const dateCell=i===0?'<td rowspan="'+schools.length+'" style="font-weight:700;font-size:15px;color:var(--ink);background:#fffbeb;vertical-align:middle;text-align:center">'+date+'<br><span style="font-size:12px;color:var(--ash)">'+getDowS(date)+'요일</span></td>':'';
-          return '<tr class="'+rowCls+'">'+dateCell+'<td style="font-weight:600;color:var(--ink)">'+sc.name+'</td><td style="font-size:13px;line-height:1.8">'+subCell+'</td><td>'+stat+'</td></tr>';
+          const stat=st.confirmed
+            ?'<span style="color:#b17816;font-weight:700;font-size:15px">★ 최종확정</span>'
+            :'<span style="color:#15803d;font-weight:700;font-size:15px">▶ 임시배정</span>';
+          const subCell=st.teachers
+            ?Object.entries(st.teachers).map(e=>'<div style="margin-bottom:5px;display:flex;align-items:center;gap:6px">'+subTag(e[0],true)+'<span style="font-size:15px">'+e[1].join(', ')+'</span></div>').join('')
+            :'<div style="display:flex;flex-wrap:wrap;gap:4px">'+sc.subs.map(s=>subTag(s,true)).join('')+'</div>';
+          const dateCell=i===0
+            ?'<td rowspan="'+schools.length+'" style="font-weight:700;font-size:16px;color:var(--ink);background:#fffbeb;vertical-align:middle;text-align:center;padding:14px 12px;white-space:nowrap">'+date+'<br><span style="font-size:15px;color:var(--ink);font-weight:600">'+getDowS(date)+'요일</span></td>'
+            :'';
+          return '<tr class="'+rowCls+'">'+dateCell
+            +'<td style="font-weight:700;font-size:15px;color:var(--ink);padding:14px 15px;vertical-align:middle">'+sc.name+'</td>'
+            +'<td style="padding:14px 15px;line-height:1.8">'+subCell+'</td>'
+            +lecCell(sc)
+            +'<td style="padding:14px 15px;vertical-align:middle">'+stat+'</td>'
+            +'</tr>';
         }).join('');
       }).join('')
-    : '<tr><td colspan="5" style="text-align:center;color:var(--ash);padding:24px">배정된 학교가 없습니다.</td></tr>';
+    :'<tr><td colspan="5" style="text-align:center;color:var(--ash);padding:32px;font-size:15px">배정된 학교가 없습니다.</td></tr>';
 
-  // 미배정 학교
+  // 미배정 행
   const unassigned=SCHOOLS.filter(sc=>!STATE[sc.name]||!STATE[sc.name].date);
   const unassignedRows=unassigned.map(sc=>{
-    const dateTd=viewMode==='date'?'<td style="color:var(--ash)">—</td>':'<td style="color:var(--ash)">—</td>';
-    return '<tr><td style="font-weight:600;color:var(--ash)">'+sc.name+'</td>'+dateTd+'<td>'+sc.subs.map(s=>subTag(s,true)).join(' ')+'</td><td style="color:var(--ash)">—</td><td><span style="color:#9b9c92">미배정</span></td></tr>';
+    const dateTd='<td style="color:var(--ash);padding:12px 15px;font-size:15px">—</td>';
+    return '<tr>'
+      +'<td style="font-weight:600;color:var(--ash);padding:12px 15px;font-size:15px">'+sc.name+'</td>'
+      +dateTd
+      +'<td style="padding:12px 15px"><div style="display:flex;flex-wrap:wrap;gap:4px">'+sc.subs.map(s=>subTag(s,true)).join('')+'</div></td>'
+      +'<td style="color:var(--ash);padding:12px 15px;font-size:15px">—</td>'
+      +'<td style="padding:12px 15px"><span style="color:#9b9c92;font-size:15px">미배정</span></td>'
+      +'</tr>';
   }).join('');
 
-  const toggleBtns='<div style="display:flex;gap:6px;margin-bottom:14px">'
-    +'<button class="f-pill'+(viewMode==='school'?' active':'')+'" onclick="setSummaryView(\'school\')">학교순</button>'
-    +'<button class="f-pill'+(viewMode==='date'?' active':'')+'" onclick="setSummaryView(\'date\')">날짜순</button>'
+  const toggleBtns='<div style="display:flex;gap:8px;margin-bottom:16px">'
+    +'<button class="f-pill'+(viewMode==='school'?' active':'')+'" style="font-size:17px" data-v="school" onclick="setSummaryView(this.dataset.v)">학교순</button>'
+    +'<button class="f-pill'+(viewMode==='date'?' active':'')+'" style="font-size:17px" data-v="date" onclick="setSummaryView(this.dataset.v)">날짜순</button>'
     +'</div>';
 
+  const thead_school='<thead><tr>'
+    +'<th style="font-size:16.5px;padding:13px 15px;width:200px">학교</th>'
+    +'<th style="font-size:16.5px;padding:13px 15px;width:152px;white-space:nowrap">배정 날짜</th>'
+    +'<th style="font-size:16.5px;padding:13px 15px">교과별 교사</th>'
+    +'<th style="font-size:16.5px;padding:13px 15px;width:250px;white-space:nowrap">전체 연수 담당</th>'
+    +'<th style="font-size:16.5px;padding:13px 15px;width:220px;white-space:nowrap;text-align:center">상태</th>'
+    +'</tr></thead>';
+
+  const thead_date='<thead><tr>'
+    +'<th style="font-size:16.5px;padding:13px 15px;width:202px">날짜</th>'
+    +'<th style="font-size:16.5px;padding:13px 15px;width:200px">학교</th>'
+    +'<th style="font-size:16.5px;padding:13px 15px">교과별 교사</th>'
+    +'<th style="font-size:16.5px;padding:13px 15px;width:250px;white-space:nowrap">전체 연수 담당</th>'
+    +'<th style="font-size:16.5px;padding:13px 15px;width:220px;white-space:nowrap;text-align:center">상태</th>'
+    +'</tr></thead>';
+
   if(viewMode==='date'){
-    return toggleBtns+'<div class="tbl-wrap"><table class="sum-tbl"><thead><tr><th style="width:100px">날짜</th><th>학교</th><th>교과별 교사</th><th style="width:130px">📢 전체 연수 담당</th><th style="width:90px">상태</th></tr></thead><tbody>'+dateRows+unassignedRows+'</tbody></table></div>';
+    return toggleBtns+'<div class="tbl-wrap"><table class="sum-tbl">'+thead_date+'<tbody>'+dateRows+unassignedRows+'</tbody></table></div>';
   }else{
-    return toggleBtns+'<div class="tbl-wrap"><table class="sum-tbl"><thead><tr><th>학교</th><th style="width:110px">배정 날짜</th><th>교과별 교사</th><th style="width:90px">상태</th></tr></thead><tbody>'+schoolRows+'</tbody></table></div>';
+    return toggleBtns+'<div class="tbl-wrap"><table class="sum-tbl">'+thead_school+'<tbody>'+schoolRows+'</tbody></table></div>';
   }
 }
 
@@ -611,7 +655,7 @@ function buildBalance(){
         ? '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">'+myDates.map(d=>'<span style="font-size:13px;background:#eeefe9;border-radius:4px;padding:3px 7px;color:var(--mid)">'+d+'('+getDowS(d)+')</span>').join('')+'</div>'
         : '';
       return '<div class="bal-row" style="flex-wrap:wrap;align-items:flex-start">'
-        +'<span style="font-size:15px;min-width:65px;color:var(--mid);flex-shrink:0">'+(isL?'📢 ':'')+t.name+(isN?' <span class="new-badge">NEW</span>':'')+'</span>'
+        +'<span style="font-size:15px;min-width:65px;color:var(--ink);font-weight:700;flex-shrink:0">'+(isL?'📢 ':'')+t.name+(isN?' <span class="new-badge">NEW</span>':'')+'</span>'
         +'<div class="bal-bg" style="margin-top:4px"><div class="bal-bar" style="width:'+pct+'%;background:'+bar+'"></div></div>'
         +'<span class="bal-cnt" style="flex-shrink:0">'+t.count+'회</span>'
         +(datesHtml?'<div style="width:100%;padding-left:64px">'+datesHtml+'</div>':'')
@@ -632,9 +676,9 @@ function buildRaw(){
   const pills=subs.map(s=>'<button class="f-pill'+(rawFilter===s?' active':'')+'" data-s="'+s+'" onclick="setRawFilter(this.dataset.s)">'+s+'</button>').join('');
   const rows=TEACHERS.filter(t=>t.name&&(rawFilter==='전체'||t.sub===rawFilter)).map((t,i)=>{
     const rl=t.role==='lec'?'📢 연수강사':t.role==='new'?'NEW 신규':'기존';
-    return '<tr style="background:'+(i%2===0?'#fff':'#fafafa')+'"><td style="font-weight:600;color:var(--ink);white-space:nowrap;width:80px">'+t.name+'</td><td style="width:65px">'+subTag(t.sub,true)+'</td><td style="font-size:13px;white-space:nowrap;width:100px">'+rl+'</td><td style="text-align:center;font-weight:700;width:65px;color:'+(t.unavail.length>15?'#991b1b':t.unavail.length>7?'#92400e':'#065f46')+'">'+t.unavail.length+'일</td><td style="font-size:12px;font-family:monospace;color:#4d4f46;word-break:break-all">'+( t.unavail.join(', ')||'—')+'</td><td style="font-size:13px;color:#9b9c92;white-space:nowrap;width:110px">'+(t.note||'')+'</td></tr>';
+    return '<tr style="background:'+(i%2===0?'#fff':'#fafafa')+'"><td style="font-weight:600;color:var(--ink);white-space:nowrap;width:90px">'+t.name+'</td><td style="width:90px">'+subTag(t.sub,true)+'</td><td style="font-size:13px;white-space:nowrap;width:120px">'+rl+'</td><td style="text-align:center;font-weight:700;width:100px;color:'+(t.unavail.length>15?'#991b1b':t.unavail.length>7?'#92400e':'#065f46')+'">'+t.unavail.length+'일</td><td style="font-size:12px;font-family:monospace;color:#4d4f46;word-break:break-all">'+( t.unavail.join(', ')||'—')+'</td><td style="font-size:13px;color:#9b9c92;white-space:nowrap;width:120px">'+(t.note||'')+'</td></tr>';
   }).join('');
-  return '<div class="filter-bar">'+pills+'</div><div class="tbl-wrap"><table class="d-tbl" style="table-layout:fixed"><colgroup><col style="width:80px"><col style="width:65px"><col style="width:100px"><col style="width:65px"><col><col style="width:110px"></colgroup><thead><tr><th>이름</th><th>교과</th><th>구분</th><th>불가 일수</th><th>불가 날짜</th><th>비고</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  return '<div class="filter-bar">'+pills+'</div><div class="tbl-wrap"><table class="d-tbl" style="table-layout:fixed"><colgroup><col style="width:90px"><col style="width:90px"><col style="width:120px"><col style="width:100px"><col><col style="width:120px"></colgroup><thead><tr><th>이름</th><th>교과</th><th>구분</th><th>불가 일수</th><th>불가 날짜</th><th>비고</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 
 /* ===== ACTIONS ===== */
